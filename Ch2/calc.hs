@@ -23,3 +23,11 @@ doublePlusTow x = doubleX + 2
 -- GHCi> f 8
 -- 64
 
+--2.1 - 2.3
+inc n = n
+double n = n*2
+square n = n**2
+
+check n = if even n
+          then n - 2
+          else 3 * n - 1
