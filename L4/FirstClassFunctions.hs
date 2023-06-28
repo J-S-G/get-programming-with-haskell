@@ -108,7 +108,7 @@ sfOffice name = if lastName < "L"
   where lastName = snd name 
         nameText = (fst name)++" "++lastName 
 
-nyOffice name = nameText ++ " : PO Box 789 = New York, NY, 10013"
+nyOffice name = nameText ++ " : PO Box 789 - New York, NY, 10013"
   where nameText = (fst name)++" "++(snd name)
 
 renoOffice name = nameText++" - PO Box 456 - Reno, NV 89523"
