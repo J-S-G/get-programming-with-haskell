@@ -62,6 +62,7 @@ names = [("Ian", "Curtis"),
 -- [("Bernard","Sumner"),("Ian","Curtis"),("Peter","Hook"),("Stephen","Morris")]
 
 -- Sort By Last Name:
+compareLastNames :: (Ord a1, Ord a2) => (a2, a1) -> (a2, a1) -> Ordering
 compareLastNames name1 name2
   | lastName1 > lastName2 = GT
   | lastName1 < lastName2 = LT
@@ -100,6 +101,7 @@ compareLastNames name1 name2
 -- New York: use a colon instead of hyphen 
 -- Reno: only Last Names 
 
+sfOffice :: ([Char], [Char]) -> [Char]
 sfOffice name = if lastName < "L"
                 then nameText 
                 ++ " - PO Box 1234 - San Francisco, CA, 94111"
@@ -108,21 +110,29 @@ sfOffice name = if lastName < "L"
   where lastName = snd name 
         nameText = (fst name)++" "++lastName 
 
+nyOffice :: ([Char], [Char]) -> [Char]
 nyOffice name = nameText ++ " : PO Box 789 - New York, NY, 10013"
   where nameText = (fst name)++" "++(snd name)
 
+renoOffice :: (a, [Char]) -> [Char]
 renoOffice name = nameText++" - PO Box 456 - Reno, NV 89523"
   where nameText = snd name
 
+dcOffice :: (a, [Char]) -> [Char]
+dcOffice name = nameText++" - PO Box 121 - Washington, DC 23056"
+  where nameText = snd name ++ ", Esq"
 -- How to use these 3 address functions w/addressLetter?
 
+getLocationFunction :: [Char] -> ([Char], [Char]) -> [Char]
 getLocationFunction location = case location of
   "ny" -> nyOffice -- if location is ny, returns nyOffice function
   "sf" -> sfOffice -- if location is sf, returns sfOffice function
   "reno" -> renoOffice --if location is reno, returns renoOffice function
+  "dc" -> dcOffice --if location is wa, returns waOffice function
   _ -> (\name -> (fst name)++ " "++ (snd name)) -- underscore _ is wildcard : generic solution
 
 -- addressLetter V.2 
+addressLetter :: ([Char], [Char]) -> [Char] -> [Char]
 addressLetter name location = locationFunction name 
   where locationFunction = getLocationFunction location 
 
@@ -130,7 +140,7 @@ addressLetter name location = locationFunction name
 -- [1 of 1] Compiling Main             ( FirstClassFunctions.hs, interpreted )
 -- Ok, one module loaded.
 -- *Main> addressLetter ("Bob","Jones") "ny"
--- "Bob Jones : PO Box 789 = New York, NY, 10013"
+-- "Bob Jones : PO Box 789 - New York, NY, 10013"
 -- *Main> addressLetter ("Habib","Jones") "sf"
 -- "Habib Jones - PO Box 1234 - San Francisco, CA, 94111"
 -- *Main> addressLetter ("Beth","Tums") "reno"
